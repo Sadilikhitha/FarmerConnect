@@ -1,0 +1,4 @@
+py -3.13 -m venv venv
+
+
+pip uninstall bcrypt -y

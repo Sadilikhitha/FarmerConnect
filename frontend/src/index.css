@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+
+  background-color: #f7faf7;
+
+  background-image:
+    linear-gradient(
+      rgba(247, 250, 247, 0.45),
+      rgba(247, 250, 247, 0.65)
+    ),
+    url("/farm-background.svg");
+
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+}
+
+.btn-primary {
+  @apply bg-farmgreen-500 hover:bg-farmgreen-600 text-white font-semibold py-2 px-4 rounded-full transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-white border border-farmgreen-500 text-farmgreen-600 hover:bg-farmgreen-50 font-semibold py-2 px-4 rounded-full transition-colors;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4;
+}
+
+.input-field {
+  @apply w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-farmgreen-500;
+}

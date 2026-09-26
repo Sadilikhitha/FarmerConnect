@@ -1,0 +1,296 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#064d37"/>
+      <stop offset="55%" stop-color="#087443"/>
+      <stop offset="100%" stop-color="#5abf2a"/>
+    </linearGradient>
+
+    <radialGradient id="glow">
+      <stop offset="0%" stop-color="#9bea45" stop-opacity=".55"/>
+      <stop offset="100%" stop-color="#9bea45" stop-opacity="0"/>
+    </radialGradient>
+
+    <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M60 0H0V60" fill="none"
+            stroke="#d5f5d5"
+            stroke-opacity=".12"/>
+    </pattern>
+
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="45"/>
+    </filter>
+  </defs>
+
+  <!-- Main background -->
+  <rect width="1600" height="900" fill="url(#bg)"/>
+
+  <!-- Green glow -->
+  <circle cx="1300" cy="580" r="400"
+          fill="url(#glow)"
+          opacity=".7"/>
+
+  <circle cx="300" cy="250" r="260"
+          fill="#00a968"
+          opacity=".15"
+          filter="url(#blur)"/>
+
+  <!-- Grid -->
+  <rect width="1600" height="900" fill="url(#grid)"/>
+
+
+  <!-- ================= TRACTOR LEFT ================= -->
+
+  <g transform="translate(80 80) scale(.65)" opacity=".28">
+
+    <!-- wheels -->
+    <circle cx="120" cy="210" r="70" fill="#58c93e"/>
+    <circle cx="300" cy="225" r="45" fill="#58c93e"/>
+
+    <circle cx="120" cy="210" r="28" fill="#07543a"/>
+    <circle cx="300" cy="225" r="18" fill="#07543a"/>
+
+    <!-- body -->
+    <path
+      d="M60 195
+         L95 120
+         L260 130
+         L315 195
+         L235 195
+         L205 160
+         L85 160 Z"
+      fill="#35b83e"/>
+
+    <!-- cabin -->
+    <path
+      d="M110 120
+         L125 35
+         L230 35
+         L260 130
+         L145 120 Z"
+      fill="#39c74b"/>
+
+    <!-- window -->
+    <path
+      d="M145 50
+         L218 50
+         L230 102
+         L150 98 Z"
+      fill="#8ce6b0"/>
+
+    <!-- exhaust -->
+    <rect x="265" y="25" width="10" height="90"
+          fill="#46b64b"/>
+
+    <circle cx="270" cy="20" r="8"
+            fill="#3da444"/>
+  </g>
+
+
+  <!-- ================= TRACTOR RIGHT ================= -->
+
+  <g transform="translate(1300 580) scale(.58)" opacity=".30">
+
+    <circle cx="120" cy="210" r="70" fill="#63d34b"/>
+    <circle cx="300" cy="225" r="45" fill="#63d34b"/>
+
+    <circle cx="120" cy="210" r="28" fill="#07543a"/>
+    <circle cx="300" cy="225" r="18" fill="#07543a"/>
+
+    <path
+      d="M60 195
+         L95 120
+         L260 130
+         L315 195
+         L235 195
+         L205 160
+         L85 160 Z"
+      fill="#39b944"/>
+
+    <path
+      d="M110 120
+         L125 35
+         L230 35
+         L260 130
+         L145 120 Z"
+      fill="#40c84c"/>
+
+    <path
+      d="M145 50
+         L218 50
+         L230 102
+         L150 98 Z"
+      fill="#a2e8ba"/>
+  </g>
+
+
+  <!-- ================= WHEAT ================= -->
+
+  <g opacity=".25" fill="#b9e44d">
+
+    <path d="M1450 190
+             C1440 130 1450 80 1470 40
+             C1485 90 1480 140 1472 190Z"/>
+
+    <ellipse cx="1445" cy="75"
+             rx="13" ry="35"
+             transform="rotate(-35 1445 75)"/>
+
+    <ellipse cx="1460" cy="115"
+             rx="13" ry="35"
+             transform="rotate(-25 1460 115)"/>
+
+    <ellipse cx="1480" cy="70"
+             rx="13" ry="35"
+             transform="rotate(25 1480 70)"/>
+
+    <ellipse cx="1485" cy="120"
+             rx="13" ry="35"
+             transform="rotate(30 1485 120)"/>
+  </g>
+
+
+  <!-- ================= WRENCH ================= -->
+
+  <g transform="translate(55 300) rotate(-30)"
+     opacity=".22"
+     fill="none"
+     stroke="#b5ded0"
+     stroke-width="20"
+     stroke-linecap="round">
+
+    <path d="M0 60 L90 60"/>
+
+    <path d="M0 60
+             C-20 20 10 -10 45 5"/>
+
+    <path d="M0 60
+             C-20 100 10 130 45 115"/>
+  </g>
+
+
+  <!-- ================= WATER DROP ================= -->
+
+  <path
+    d="M1530 340
+       C1530 340 1495 390 1495 420
+       C1495 450 1510 470 1530 470
+       C1550 470 1565 450 1565 420
+       C1565 390 1530 340 1530 340Z"
+    fill="#8ee5c0"
+    opacity=".22"/>
+
+
+  <!-- ================= SEEDLING ================= -->
+
+  <g transform="translate(180 530)" opacity=".35">
+
+    <path
+      d="M45 130
+         C45 80 50 40 58 0"
+      stroke="#8bdd4b"
+      stroke-width="9"
+      fill="none"/>
+
+    <path
+      d="M55 55
+         C10 20 -15 55 20 78
+         C42 90 55 72 55 55Z"
+      fill="#70d83c"/>
+
+    <path
+      d="M55 40
+         C95 0 125 35 82 60
+         C62 70 55 60 55 40Z"
+      fill="#62c735"/>
+
+    <ellipse
+      cx="45"
+      cy="140"
+      rx="45"
+      ry="16"
+      fill="#687c36"/>
+  </g>
+
+
+  <!-- ================= FARM FIELD ================= -->
+
+  <path
+    d="M0 735
+       C220 640 400 820 620 755
+       C850 685 970 820 1190 755
+       C1370 700 1490 730 1600 670
+       L1600 900
+       L0 900 Z"
+    fill="#2fae4b"
+    opacity=".45"/>
+
+  <path
+    d="M0 800
+       C250 700 430 875 690 785
+       C930 700 1100 850 1330 785
+       C1450 750 1530 775 1600 725
+       L1600 900
+       L0 900 Z"
+    fill="#075b3d"
+    opacity=".60"/>
+
+
+  <!-- ================= BOTTOM LEAVES ================= -->
+
+  <g opacity=".25" fill="#063f2d">
+
+    <path
+      d="M0 900
+         C35 830 60 800 95 775
+         C75 840 65 875 65 900Z"/>
+
+    <path
+      d="M35 900
+         C100 825 140 805 185 790
+         C145 850 120 880 115 900Z"/>
+
+    <path
+      d="M1600 900
+         C1570 830 1540 800 1505 775
+         C1525 840 1535 875 1535 900Z"/>
+
+    <path
+      d="M1565 900
+         C1500 825 1460 805 1415 790
+         C1455 850 1480 880 1485 900Z"/>
+  </g>
+
+
+  <!-- ================= CENTER WHEAT ================= -->
+
+  <g opacity=".25" fill="#a8d947">
+
+    <path
+      d="M800 865
+         C795 810 800 765 815 720
+         C828 770 822 820 815 865Z"/>
+
+    <ellipse
+      cx="798"
+      cy="750"
+      rx="10"
+      ry="25"
+      transform="rotate(-30 798 750)"/>
+
+    <ellipse
+      cx="810"
+      cy="790"
+      rx="10"
+      ry="25"
+      transform="rotate(30 810 790)"/>
+
+    <ellipse
+      cx="820"
+      cy="735"
+      rx="10"
+      ry="25"
+      transform="rotate(30 820 735)"/>
+  </g>
+
+</svg>
