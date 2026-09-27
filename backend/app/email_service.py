@@ -1,57 +1,58 @@
 """
-Email service for sending Gmail verification OTPs.
+Email service for sending FarmerConnect verification OTPs using Resend.
 """
 
 import os
-import smtplib
+import resend
 
-from email.message import EmailMessage
 from dotenv import load_dotenv
 
 load_dotenv()
 
+RESEND_API_KEY = os.getenv("RESEND_API_KEY")
 
-SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
-SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
-SMTP_EMAIL = os.getenv("SMTP_EMAIL")
-SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+if RESEND_API_KEY:
+    resend.api_key = RESEND_API_KEY
 
 
 def send_verification_email(
     recipient_email: str,
     otp: str
 ):
-    if not SMTP_EMAIL or not SMTP_PASSWORD:
+    if not RESEND_API_KEY:
         raise RuntimeError(
-            "SMTP_EMAIL and SMTP_PASSWORD are not configured."
+            "RESEND_API_KEY is not configured."
         )
 
-    message = EmailMessage()
+    params: resend.Emails.SendParams = {
+        "from": "FarmerConnect <onboarding@resend.dev>",
+        "to": [recipient_email],
+        "subject": "FarmerConnect - Email Verification",
+        "html": f"""
+        <html>
+            <body>
+                <h2>Welcome to FarmerConnect!</h2>
 
-    message["Subject"] = "FarmerConnect - Email Verification"
-    message["From"] = SMTP_EMAIL
-    message["To"] = recipient_email
+                <p>Your email verification OTP is:</p>
 
-    message.set_content(
-        f"""
-Hello,
+                <h1>{otp}</h1>
 
-Welcome to FarmerConnect!
+                <p>This OTP is valid for <strong>10 minutes</strong>.</p>
 
-Your email verification OTP is:
+                <p>
+                    If you did not create a FarmerConnect account,
+                    you can ignore this email.
+                </p>
 
-{otp}
+                <br>
 
-This OTP is valid for 10 minutes.
+                <p>
+                    Regards,<br>
+                    <strong>FarmerConnect Team</strong>
+                </p>
+            </body>
+        </html>
+        """
+    }
 
-If you did not create a FarmerConnect account, you can ignore this email.
-
-Regards,
-FarmerConnect Team
-"""
-    )
-
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as server:
-        server.starttls()
-        server.login(SMTP_EMAIL, SMTP_PASSWORD)
-        server.send_message(message)
+    resend.Emails.send(params)
