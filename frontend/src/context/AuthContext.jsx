@@ -9,10 +9,12 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (!token) {
       setLoading(false);
       return;
     }
+
     api
       .get("/auth/me")
       .then((res) => setUser(res.data))
@@ -24,17 +26,44 @@ export function AuthProvider({ children }) {
   }, []);
 
   const login = async (email, password) => {
-    const res = await api.post("/auth/login", { email, password });
+    const res = await api.post("/auth/login", {
+      email,
+      password,
+    });
+
     localStorage.setItem("token", res.data.access_token);
     setUser(res.data.user);
+
     return res.data.user;
   };
 
   const register = async (payload) => {
     const res = await api.post("/auth/register", payload);
+
+    // Registration now only sends the OTP.
+    // It does NOT log the user in yet.
+    return res.data;
+  };
+
+  const verifyEmail = async (email, otp) => {
+    const res = await api.post("/auth/verify-email", {
+      email,
+      otp,
+    });
+
+    // Verification returns a login token.
     localStorage.setItem("token", res.data.access_token);
     setUser(res.data.user);
-    return res.data.user;
+
+    return res.data;
+  };
+
+  const resendOtp = async (email) => {
+    const res = await api.post("/auth/resend-otp", {
+      email,
+    });
+
+    return res.data;
   };
 
   const logout = () => {
@@ -43,7 +72,17 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        loading,
+        login,
+        register,
+        verifyEmail,
+        resendOtp,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -52,3 +91,4 @@ export function AuthProvider({ children }) {
 export function useAuth() {
   return useContext(AuthContext);
 }
+

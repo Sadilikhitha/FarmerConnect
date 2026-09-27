@@ -5,11 +5,13 @@ import PrivateRoute from "./components/PrivateRoute";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import VerifyOTP from "./pages/VerifyOTP";
 import Equipment from "./pages/Equipment";
 import EquipmentDetails from "./pages/EquipmentDetails";
 import AddEquipment from "./pages/AddEquipment";
 import FarmerDashboard from "./pages/FarmerDashboard";
 import OwnerDashboard from "./pages/OwnerDashboard";
+import Settings from "./pages/Settings";
 
 export default function App() {
   return (
@@ -21,6 +23,16 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
+          <Route path="/verify-otp" element={<VerifyOTP />} />
+          <Route
+  path="/settings"
+  element={
+    <PrivateRoute>
+      <Settings />
+    </PrivateRoute>
+  }
+/>
           <Route path="/equipment" element={<Equipment />} />
           <Route path="/equipment/:id" element={<EquipmentDetails />} />
 

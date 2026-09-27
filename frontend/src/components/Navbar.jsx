@@ -19,22 +19,39 @@ export default function Navbar() {
         <Link to="/" className="text-xl font-bold">
           🌾 Farmer Connect
         </Link>
+
         <div className="flex items-center gap-4 text-sm font-medium flex-wrap">
           <Link to="/" className="hover:text-farmgreen-100">
             Home
           </Link>
+
           <Link to="/equipment" className="hover:text-farmgreen-100">
             Equipment
           </Link>
 
           {user && (
-            <Link to={dashboardPath} className="hover:text-farmgreen-100">
-              Dashboard
-            </Link>
+            <>
+              <Link
+                to={dashboardPath}
+                className="hover:text-farmgreen-100"
+              >
+                Dashboard
+              </Link>
+
+              <Link
+                to="/settings"
+                className="hover:text-farmgreen-100"
+              >
+                Profile
+              </Link>
+            </>
           )}
 
           {user?.role === "owner" && (
-            <Link to="/add-equipment" className="hover:text-farmgreen-100">
+            <Link
+              to="/add-equipment"
+              className="hover:text-farmgreen-100"
+            >
               Add Equipment
             </Link>
           )}
@@ -47,6 +64,7 @@ export default function Navbar() {
               >
                 Login
               </Link>
+
               <Link
                 to="/register"
                 className="bg-farmgreen-500 px-3 py-1 rounded-full"

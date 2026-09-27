@@ -11,6 +11,18 @@ from app.models import RoleEnum, StatusEnum
 
 # ---------- USER / AUTH ----------
 
+class EquipmentPublicOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    category: str
+    description: Optional[str] = None
+    price_per_day: float
+    location: str
+    image_url: Optional[str] = None
+    created_at: datetime
+
 class UserRegister(BaseModel):
     name: str
     email: EmailStr
@@ -24,6 +36,24 @@ class UserLogin(BaseModel):
     password: str
 
 
+class VerifyOTP(BaseModel):
+    email: EmailStr
+    otp: str
+
+class ResendOTP(BaseModel):
+    email: EmailStr
+
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+
+
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: str
+    confirm_password: str
+
+
 class UserOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -32,6 +62,7 @@ class UserOut(BaseModel):
     email: EmailStr
     phone: str
     role: RoleEnum
+    is_email_verified: bool
     created_at: datetime
 
 

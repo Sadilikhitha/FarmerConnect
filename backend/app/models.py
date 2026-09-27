@@ -41,6 +41,9 @@ class User(Base):
     phone = Column(String(20), nullable=False)
     password_hash = Column(String(255), nullable=False)
     role = Column(Enum(RoleEnum), nullable=False)
+    is_email_verified = Column(Boolean, default=False, nullable=False)
+    verification_code = Column(String(6), nullable=True)
+    verification_expires_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     equipment = relationship(

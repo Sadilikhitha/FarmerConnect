@@ -10,24 +10,39 @@ export default function Register() {
     password: "",
     role: "farmer",
   });
+
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
+
     try {
-      const user = await register(form);
-      navigate(user.role === "owner" ? "/owner-dashboard" : "/farmer-dashboard");
+      await register(form);
+
+      // Store email temporarily for OTP verification
+      sessionStorage.setItem("verificationEmail", form.email);
+
+      navigate("/verify-otp");
     } catch (err) {
       setError(
-        err.response?.data?.detail || "Registration failed. Please try again."
+        err.response?.data?.detail ||
+          "Registration failed. Please try again."
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,15 +67,17 @@ export default function Register() {
           onChange={handleChange}
           required
         />
+
         <input
           name="email"
           type="email"
-          placeholder="Email"
+          placeholder="Gmail Address"
           className="input-field"
           value={form.email}
           onChange={handleChange}
           required
         />
+
         <input
           name="phone"
           placeholder="Phone Number"
@@ -69,6 +86,7 @@ export default function Register() {
           onChange={handleChange}
           required
         />
+
         <input
           name="password"
           type="password"
@@ -78,6 +96,12 @@ export default function Register() {
           onChange={handleChange}
           required
         />
+
+        <p className="text-xs text-gray-500">
+          Password must contain at least 8 characters, one uppercase
+          letter, one lowercase letter, one number, and one special
+          character.
+        </p>
 
         <div className="flex gap-4 text-sm">
           <label className="flex items-center gap-1">
@@ -90,6 +114,7 @@ export default function Register() {
             />
             Farmer
           </label>
+
           <label className="flex items-center gap-1">
             <input
               type="radio"
@@ -102,14 +127,21 @@ export default function Register() {
           </label>
         </div>
 
-        <button type="submit" className="btn-primary w-full">
-          Create Account
+        <button
+          type="submit"
+          className="btn-primary w-full"
+          disabled={loading}
+        >
+          {loading ? "Creating Account..." : "Create Account"}
         </button>
       </form>
 
       <p className="text-sm text-center mt-4 text-gray-600">
         Already have an account?{" "}
-        <Link to="/login" className="text-farmgreen-600 font-semibold">
+        <Link
+          to="/login"
+          className="text-farmgreen-600 font-semibold"
+        >
           Login
         </Link>
       </p>

@@ -2,7 +2,6 @@
 Equipment routes: list, view, add, update, delete.
 """
 
-
 from typing import List, Optional
 import os
 import shutil
@@ -17,64 +16,224 @@ from fastapi import (
     File,
     Form,
 )
-
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app import models, schemas
-from app.dependencies import get_current_user, require_owner
+from app.auth import decode_access_token
+from app.dependencies import require_owner
 
-router = APIRouter(prefix="/equipment", tags=["Equipment"])
+
+router = APIRouter(
+    prefix="/equipment",
+    tags=["Equipment"],
+)
+
+
+# Allows the equipment API to work for both:
+# - logged-in users
+# - logged-out users
+optional_oauth2 = OAuth2PasswordBearer(
+    tokenUrl="/auth/token",
+    auto_error=False,
+)
+
+
+def get_optional_user(
+    token: Optional[str] = Depends(optional_oauth2),
+    db: Session = Depends(get_db),
+):
+    """
+    Return the logged-in user if a valid token is provided.
+    Return None for logged-out users.
+    """
+
+    if not token:
+        return None
+
+    payload = decode_access_token(token)
+
+    if not payload:
+        return None
+
+    user_id = payload.get("sub")
+
+    if not user_id:
+        return None
+
+    return (
+        db.query(models.User)
+        .filter(models.User.id == int(user_id))
+        .first()
+    )
 
 
 def _to_out(item: models.Equipment) -> schemas.EquipmentOut:
+    """
+    Full equipment response for authenticated users.
+    Includes owner details and availability.
+    """
+
     out = schemas.EquipmentOut.model_validate(item)
-    out.owner_name = item.owner.name if item.owner else None
-    out.owner_phone = item.owner.phone if item.owner else None
+
+    out.owner_name = (
+        item.owner.name
+        if item.owner
+        else None
+    )
+
+    out.owner_phone = (
+        item.owner.phone
+        if item.owner
+        else None
+    )
+
     return out
 
 
-@router.get("", response_model=List[schemas.EquipmentOut])
+def _to_public_out(
+    item: models.Equipment,
+) -> schemas.EquipmentPublicOut:
+    """
+    Public equipment response.
+
+    Does NOT expose:
+    - owner name
+    - owner phone
+    - availability
+    - owner ID
+    """
+
+    return schemas.EquipmentPublicOut.model_validate(item)
+
+
+# ---------------------------------------------------------
+# PUBLIC EQUIPMENT LIST
+# ---------------------------------------------------------
+
+@router.get(
+    "",
+    response_model=List[schemas.EquipmentPublicOut],
+)
 def list_equipment(
     search: Optional[str] = None,
     category: Optional[str] = None,
     location: Optional[str] = None,
     db: Session = Depends(get_db),
 ):
+    """
+    Anyone can browse equipment.
+
+    Only public equipment information is returned.
+    """
+
     query = db.query(models.Equipment)
 
     if search:
-        query = query.filter(models.Equipment.name.ilike(f"%{search}%"))
+        query = query.filter(
+            models.Equipment.name.ilike(f"%{search}%")
+        )
+
     if category:
-        query = query.filter(models.Equipment.category.ilike(f"%{category}%"))
+        query = query.filter(
+            models.Equipment.category.ilike(f"%{category}%")
+        )
+
     if location:
-        query = query.filter(models.Equipment.location.ilike(f"%{location}%"))
+        query = query.filter(
+            models.Equipment.location.ilike(f"%{location}%")
+        )
 
-    items = query.order_by(models.Equipment.created_at.desc()).all()
-    return [_to_out(item) for item in items]
+    items = (
+        query
+        .order_by(models.Equipment.created_at.desc())
+        .all()
+    )
+
+    return [
+        _to_public_out(item)
+        for item in items
+    ]
 
 
-@router.get("/owner/mine", response_model=List[schemas.EquipmentOut])
+# ---------------------------------------------------------
+# OWNER'S OWN EQUIPMENT
+# ---------------------------------------------------------
+
+@router.get(
+    "/owner/mine",
+    response_model=List[schemas.EquipmentOut],
+)
 def list_my_equipment(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(require_owner),
 ):
+    """
+    Logged-in owner can see their complete equipment details.
+    """
+
     items = (
         db.query(models.Equipment)
-        .filter(models.Equipment.owner_id == current_user.id)
+        .filter(
+            models.Equipment.owner_id == current_user.id
+        )
         .order_by(models.Equipment.created_at.desc())
         .all()
     )
-    return [_to_out(item) for item in items]
+
+    return [
+        _to_out(item)
+        for item in items
+    ]
 
 
-@router.get("/{equipment_id}", response_model=schemas.EquipmentOut)
-def get_equipment(equipment_id: int, db: Session = Depends(get_db)):
-    item = db.query(models.Equipment).filter(models.Equipment.id == equipment_id).first()
+# ---------------------------------------------------------
+# SINGLE EQUIPMENT DETAILS
+# ---------------------------------------------------------
+
+@router.get("/{equipment_id}")
+def get_equipment(
+    equipment_id: int,
+    db: Session = Depends(get_db),
+    current_user: Optional[models.User] = Depends(
+        get_optional_user
+    ),
+):
+    """
+    Logged-out users:
+        Can see only public equipment information.
+
+    Logged-in users:
+        Can see complete equipment information,
+        including owner details and availability.
+    """
+
+    item = (
+        db.query(models.Equipment)
+        .filter(
+            models.Equipment.id == equipment_id
+        )
+        .first()
+    )
+
     if not item:
-        raise HTTPException(status_code=404, detail="Equipment not found")
-    return _to_out(item)
+        raise HTTPException(
+            status_code=404,
+            detail="Equipment not found",
+        )
 
+    # Logged-in user
+    if current_user:
+        return _to_out(item)
+
+    # Logged-out user
+    return _to_public_out(item)
+
+
+# ---------------------------------------------------------
+# ADD EQUIPMENT
+# ---------------------------------------------------------
 
 @router.post(
     "",
@@ -92,7 +251,7 @@ def create_equipment(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(require_owner),
 ):
-    # Check image type
+    # Allowed image types
     allowed_types = {
         "image/jpeg",
         "image/png",
@@ -103,25 +262,40 @@ def create_equipment(
     if image.content_type not in allowed_types:
         raise HTTPException(
             status_code=400,
-            detail="Only JPG, JPEG, PNG, and WEBP images are allowed.",
+            detail=(
+                "Only JPG, JPEG, PNG, and WEBP "
+                "images are allowed."
+            ),
         )
 
     # Create uploads directory
     upload_dir = Path("uploads")
-    upload_dir.mkdir(parents=True, exist_ok=True)
+    upload_dir.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
     # Generate unique filename
-    file_extension = Path(image.filename).suffix.lower()
+    file_extension = Path(
+        image.filename
+    ).suffix.lower()
 
-    filename = f"equipment_{current_user.id}_{os.urandom(8).hex()}{file_extension}"
+    filename = (
+        f"equipment_{current_user.id}_"
+        f"{os.urandom(8).hex()}"
+        f"{file_extension}"
+    )
 
     file_path = upload_dir / filename
 
     # Save image
     with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(image.file, buffer)
+        shutil.copyfileobj(
+            image.file,
+            buffer,
+        )
 
-    # Store URL/path in database
+    # Store image URL
     image_url = f"/uploads/{filename}"
 
     item = models.Equipment(
@@ -141,39 +315,90 @@ def create_equipment(
 
     return _to_out(item)
 
-@router.put("/{equipment_id}", response_model=schemas.EquipmentOut)
+
+# ---------------------------------------------------------
+# UPDATE EQUIPMENT
+# ---------------------------------------------------------
+
+@router.put(
+    "/{equipment_id}",
+    response_model=schemas.EquipmentOut,
+)
 def update_equipment(
     equipment_id: int,
     equipment_in: schemas.EquipmentUpdate,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(require_owner),
 ):
-    item = db.query(models.Equipment).filter(models.Equipment.id == equipment_id).first()
-    if not item:
-        raise HTTPException(status_code=404, detail="Equipment not found")
-    if item.owner_id != current_user.id:
-        raise HTTPException(status_code=403, detail="You do not own this equipment")
+    item = (
+        db.query(models.Equipment)
+        .filter(
+            models.Equipment.id == equipment_id
+        )
+        .first()
+    )
 
-    for field, value in equipment_in.model_dump(exclude_unset=True).items():
-        setattr(item, field, value)
+    if not item:
+        raise HTTPException(
+            status_code=404,
+            detail="Equipment not found",
+        )
+
+    if item.owner_id != current_user.id:
+        raise HTTPException(
+            status_code=403,
+            detail="You do not own this equipment",
+        )
+
+    for field, value in equipment_in.model_dump(
+        exclude_unset=True
+    ).items():
+        setattr(
+            item,
+            field,
+            value,
+        )
 
     db.commit()
     db.refresh(item)
+
     return _to_out(item)
 
 
-@router.delete("/{equipment_id}", status_code=status.HTTP_204_NO_CONTENT)
+# ---------------------------------------------------------
+# DELETE EQUIPMENT
+# ---------------------------------------------------------
+
+@router.delete(
+    "/{equipment_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
 def delete_equipment(
     equipment_id: int,
     db: Session = Depends(get_db),
     current_user: models.User = Depends(require_owner),
 ):
-    item = db.query(models.Equipment).filter(models.Equipment.id == equipment_id).first()
+    item = (
+        db.query(models.Equipment)
+        .filter(
+            models.Equipment.id == equipment_id
+        )
+        .first()
+    )
+
     if not item:
-        raise HTTPException(status_code=404, detail="Equipment not found")
+        raise HTTPException(
+            status_code=404,
+            detail="Equipment not found",
+        )
+
     if item.owner_id != current_user.id:
-        raise HTTPException(status_code=403, detail="You do not own this equipment")
+        raise HTTPException(
+            status_code=403,
+            detail="You do not own this equipment",
+        )
 
     db.delete(item)
     db.commit()
+
     return None
