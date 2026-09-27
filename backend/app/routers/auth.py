@@ -110,14 +110,16 @@ def register(
     try:
         send_verification_email(email, otp)
 
-    except Exception:
-        # Remove user if email could not be sent
+    except Exception as e:
+        print("EMAIL ERROR:", repr(e))
+
+    # Remove user if email could not be sent
         db.delete(user)
         db.commit()
 
         raise HTTPException(
             status_code=500,
-            detail="Unable to send verification email. Please try again.",
+            detail=f"Email error: {str(e)}",
         )
 
     return {
@@ -203,7 +205,7 @@ def verify_email(
 
 @router.post("/resend-otp")
 def resend_otp(
-    verification: schemas.VerifyOTP,
+    verification: schemas.ResendOTP,
     db: Session = Depends(get_db),
 ):
     email = str(verification.email).lower().strip()
