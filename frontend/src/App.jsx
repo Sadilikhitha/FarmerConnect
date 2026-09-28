@@ -9,8 +9,6 @@ import VerifyOTP from "./pages/VerifyOTP";
 import Equipment from "./pages/Equipment";
 import EquipmentDetails from "./pages/EquipmentDetails";
 import AddEquipment from "./pages/AddEquipment";
-import FarmerDashboard from "./pages/FarmerDashboard";
-import OwnerDashboard from "./pages/OwnerDashboard";
 import Settings from "./pages/Settings";
 
 export default function App() {
@@ -39,29 +37,12 @@ export default function App() {
           <Route
             path="/add-equipment"
             element={
-              <PrivateRoute role="owner">
+              <PrivateRoute>
                 <AddEquipment />
               </PrivateRoute>
             }
           />
 
-          <Route
-            path="/farmer-dashboard"
-            element={
-              <PrivateRoute role="farmer">
-                <FarmerDashboard />
-              </PrivateRoute>
-            }
-          />
-
-          <Route
-            path="/owner-dashboard"
-            element={
-              <PrivateRoute role="owner">
-                <OwnerDashboard />
-              </PrivateRoute>
-            }
-          />
         </Routes>
       </main>
     </div>

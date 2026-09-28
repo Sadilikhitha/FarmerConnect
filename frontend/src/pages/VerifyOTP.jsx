@@ -37,15 +37,11 @@ export default function VerifyOTP() {
     setLoading(true);
 
     try {
-      const result = await verifyEmail(email, otp);
+      await verifyEmail(email, otp);
 
       sessionStorage.removeItem("verificationEmail");
 
-      if (result.user.role === "owner") {
-        navigate("/owner-dashboard");
-      } else {
-        navigate("/farmer-dashboard");
-      }
+      navigate("/equipment");
     } catch (err) {
       setError(
         err.response?.data?.detail ||

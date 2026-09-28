@@ -54,7 +54,7 @@ export default function EquipmentDetails() {
       });
 
       setMessage(
-        "Rental request sent! Check your dashboard for status."
+        "Rental request sent! You can continue browsing equipment while the owner reviews your request."
       );
 
       setShowForm(false);

@@ -1,15 +1,14 @@
-"""
-Pydantic schemas used for request validation and response serialization.
-"""
-
 from datetime import datetime
 from typing import Optional
+
 from pydantic import BaseModel, EmailStr, ConfigDict
 
-from app.models import RoleEnum, StatusEnum
+from app.models import StatusEnum
 
 
-# ---------- USER / AUTH ----------
+# =========================================================
+# EQUIPMENT PUBLIC
+# =========================================================
 
 class EquipmentPublicOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
@@ -23,12 +22,16 @@ class EquipmentPublicOut(BaseModel):
     image_url: Optional[str] = None
     created_at: datetime
 
+
+# =========================================================
+# AUTH
+# =========================================================
+
 class UserRegister(BaseModel):
     name: str
     email: EmailStr
     phone: str
     password: str
-    role: RoleEnum
 
 
 class UserLogin(BaseModel):
@@ -40,8 +43,14 @@ class VerifyOTP(BaseModel):
     email: EmailStr
     otp: str
 
+
 class ResendOTP(BaseModel):
     email: EmailStr
+
+
+# =========================================================
+# PROFILE
+# =========================================================
 
 class UserUpdate(BaseModel):
     name: Optional[str] = None
@@ -61,7 +70,6 @@ class UserOut(BaseModel):
     name: str
     email: EmailStr
     phone: str
-    role: RoleEnum
     is_email_verified: bool
     created_at: datetime
 
@@ -72,8 +80,9 @@ class Token(BaseModel):
     user: UserOut
 
 
-# ---------- EQUIPMENT ----------
-
+# =========================================================
+# EQUIPMENT
+# =========================================================
 
 class EquipmentCreate(BaseModel):
     name: str
@@ -107,11 +116,14 @@ class EquipmentOut(BaseModel):
     available: bool
     owner_id: int
     created_at: datetime
+
     owner_name: Optional[str] = None
     owner_phone: Optional[str] = None
 
 
-# ---------- BOOKING ----------
+# =========================================================
+# BOOKINGS
+# =========================================================
 
 class BookingCreate(BaseModel):
     equipment_id: int
@@ -124,12 +136,18 @@ class BookingOut(BaseModel):
 
     id: int
     equipment_id: int
+
     farmer_id: int
     owner_id: int
+
     start_date: datetime
     end_date: datetime
+
     total_price: float
+
     status: StatusEnum
+
     created_at: datetime
+
     equipment_name: Optional[str] = None
     farmer_name: Optional[str] = None

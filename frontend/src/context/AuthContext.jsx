@@ -1,94 +1,205 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+} from "react";
+
 import api from "../services/api";
+
 
 const AuthContext = createContext(null);
 
+
 export function AuthProvider({ children }) {
+
   const [user, setUser] = useState(null);
+
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+
+  // =====================================================
+  // GET CURRENT USER
+  // =====================================================
+
+  const loadUser = async () => {
+
     const token = localStorage.getItem("token");
 
     if (!token) {
+
       setLoading(false);
+
       return;
+
     }
 
-    api
-      .get("/auth/me")
-      .then((res) => setUser(res.data))
-      .catch(() => {
-        localStorage.removeItem("token");
-        setUser(null);
-      })
-      .finally(() => setLoading(false));
+    try {
+
+      const response = await api.get(
+        "/auth/me"
+      );
+
+      setUser(response.data);
+
+    } catch (error) {
+
+      localStorage.removeItem("token");
+
+      setUser(null);
+
+    } finally {
+
+      setLoading(false);
+
+    }
+
+  };
+
+
+  useEffect(() => {
+
+    loadUser();
+
   }, []);
 
-  const login = async (email, password) => {
-    const res = await api.post("/auth/login", {
-      email,
-      password,
-    });
 
-    localStorage.setItem("token", res.data.access_token);
-    setUser(res.data.user);
+  // =====================================================
+  // REGISTER
+  // =====================================================
 
-    return res.data.user;
+  const register = async (formData) => {
+
+    const response = await api.post(
+      "/auth/register",
+      formData
+    );
+
+    return response.data;
+
   };
 
-  const register = async (payload) => {
-    const res = await api.post("/auth/register", payload);
 
-    // Registration now only sends the OTP.
-    // It does NOT log the user in yet.
-    return res.data;
+  // =====================================================
+  // VERIFY EMAIL
+  // =====================================================
+
+  const verifyEmail = async (
+    email,
+    otp
+  ) => {
+
+    const response = await api.post(
+      "/auth/verify-email",
+      {
+        email,
+        otp,
+      }
+    );
+
+    const data = response.data;
+
+    if (data.access_token) {
+      localStorage.setItem("token", data.access_token);
+    }
+
+    if (data.user) {
+      setUser(data.user);
+    }
+
+    return data;
+
   };
 
-  const verifyEmail = async (email, otp) => {
-    const res = await api.post("/auth/verify-email", {
-      email,
-      otp,
-    });
 
-    // Verification returns a login token.
-    localStorage.setItem("token", res.data.access_token);
-    setUser(res.data.user);
-
-    return res.data;
-  };
+  // =====================================================
+  // RESEND OTP
+  // =====================================================
 
   const resendOtp = async (email) => {
-    const res = await api.post("/auth/resend-otp", {
-      email,
-    });
 
-    return res.data;
+    const response = await api.post(
+      "/auth/resend-otp",
+      {
+        email,
+      }
+    );
+
+    return response.data;
+
   };
+
+
+  // =====================================================
+  // LOGIN
+  // =====================================================
+
+  const login = async (
+    email,
+    password
+  ) => {
+
+    const response = await api.post(
+      "/auth/login",
+      {
+        email,
+        password,
+      }
+    );
+
+    const data = response.data;
+
+    localStorage.setItem(
+      "token",
+      data.access_token
+    );
+
+    setUser(data.user);
+
+    return data;
+
+  };
+
+
+  // =====================================================
+  // LOGOUT
+  // =====================================================
 
   const logout = () => {
+
     localStorage.removeItem("token");
+
     setUser(null);
+
   };
 
+
   return (
+
     <AuthContext.Provider
       value={{
         user,
         loading,
-        login,
         register,
         verifyEmail,
         resendOtp,
+        login,
         logout,
+        loadUser,
       }}
     >
+
       {children}
+
     </AuthContext.Provider>
+
   );
+
 }
+
 
 export function useAuth() {
-  return useContext(AuthContext);
-}
 
+  return useContext(AuthContext);
+
+}

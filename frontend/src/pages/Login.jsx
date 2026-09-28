@@ -14,7 +14,7 @@ export default function Login() {
     setError("");
     try {
       const user = await login(email, password);
-      navigate(user.role === "owner" ? "/owner-dashboard" : "/farmer-dashboard");
+      navigate("/equipment");
     } catch (err) {
       setError(
         err.response?.data?.detail || "Invalid email or password. Please try again."

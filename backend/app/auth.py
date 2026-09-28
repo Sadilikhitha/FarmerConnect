@@ -84,11 +84,19 @@ def create_access_token(
 def decode_access_token(token: str) -> Optional[dict]:
 
     try:
-        return jwt.decode(
+        payload = jwt.decode(
             token,
             SECRET_KEY,
             algorithms=[ALGORITHM]
         )
 
-    except JWTError:
+        print("JWT DECODE SUCCESS:", payload)
+
+        return payload
+
+    except JWTError as e:
+        print("JWT DECODE ERROR:", repr(e))
+        print("SECRET KEY LOADED:", bool(SECRET_KEY))
+        print("ALGORITHM:", ALGORITHM)
+
         return None

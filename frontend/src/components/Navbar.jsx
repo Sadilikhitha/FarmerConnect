@@ -1,87 +1,119 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+
 export default function Navbar() {
-  const { user, logout } = useAuth();
+
   const navigate = useNavigate();
 
+  const { user, logout } = useAuth();
+
+
   const handleLogout = () => {
+
     logout();
+
     navigate("/");
+
   };
 
-  const dashboardPath =
-    user?.role === "owner" ? "/owner-dashboard" : "/farmer-dashboard";
 
   return (
-    <nav className="bg-farmgreen-700 text-white shadow-md">
-      <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between flex-wrap gap-2">
-        <Link to="/" className="text-xl font-bold">
-          🌾 Farmer Connect
+
+    <nav className="bg-green-700 text-white shadow-md">
+
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+        {/* LOGO */}
+
+        <Link
+          to="/"
+          className="text-2xl font-bold"
+        >
+          🌾 FarmerConnect
         </Link>
 
-        <div className="flex items-center gap-4 text-sm font-medium flex-wrap">
-          <Link to="/" className="hover:text-farmgreen-100">
+
+        {/* NAVIGATION */}
+
+        <div className="flex items-center gap-6">
+
+          <Link
+            to="/"
+            className="hover:text-green-200"
+          >
             Home
           </Link>
 
-          <Link to="/equipment" className="hover:text-farmgreen-100">
+
+          <Link
+            to="/equipment"
+            className="hover:text-green-200"
+          >
             Equipment
           </Link>
 
-          {user && (
+
+          {/* LOGGED IN */}
+
+          {user ? (
+
             <>
+
               <Link
-                to={dashboardPath}
-                className="hover:text-farmgreen-100"
+                to="/add-equipment"
+                className="hover:text-green-200"
               >
-                Dashboard
+                + List Equipment
               </Link>
+
 
               <Link
                 to="/settings"
-                className="hover:text-farmgreen-100"
+                className="hover:text-green-200"
               >
                 Profile
               </Link>
+
+
+              <button
+                onClick={handleLogout}
+                className="bg-white text-green-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100"
+              >
+                Logout
+              </button>
+
             </>
-          )}
 
-          {user?.role === "owner" && (
-            <Link
-              to="/add-equipment"
-              className="hover:text-farmgreen-100"
-            >
-              Add Equipment
-            </Link>
-          )}
+          ) : (
 
-          {!user ? (
             <>
+
               <Link
                 to="/login"
-                className="bg-white text-farmgreen-700 px-3 py-1 rounded-full"
+                className="hover:text-green-200"
               >
                 Login
               </Link>
 
+
               <Link
                 to="/register"
-                className="bg-farmgreen-500 px-3 py-1 rounded-full"
+                className="bg-white text-green-700 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100"
               >
                 Register
               </Link>
+
             </>
-          ) : (
-            <button
-              onClick={handleLogout}
-              className="bg-farmgreen-500 px-3 py-1 rounded-full"
-            >
-              Logout
-            </button>
+
           )}
+
         </div>
+
       </div>
+
     </nav>
+
   );
+
 }
