@@ -105,12 +105,51 @@ def register(
 
     if existing:
 
-        raise HTTPException(
-            status_code=400,
-            detail=(
-                "This Gmail address is already registered."
-            ),
+    # Account exists and is already verified
+        if existing.is_email_verified:
+            raise HTTPException(
+                status_code=400,
+                detail="This Gmail address is already registered. Please login."
+            )
+
+    # Account exists but email is NOT verified
+    # Generate a new OTP and send it again
+        otp = generate_otp()
+
+        existing.verification_code = otp
+        existing.verification_expires_at = (
+            datetime.utcnow() + timedelta(minutes=10)
         )
+
+        try:
+            send_verification_email(
+                email,
+                otp
+            )   
+
+            db.commit()
+
+        except Exception as e:
+            db.rollback()
+
+            print(
+                "RESEND OTP ERROR:",
+                repr(e)
+            )
+
+            raise HTTPException(
+                status_code=500,
+                detail="Unable to send verification OTP. Please try again."
+            )
+
+        return {
+            "message": (
+                "This Gmail is registered but not verified. "
+                "A new verification OTP has been sent to your Gmail."
+            ),
+            "email": email,
+            "requires_verification": True,
+        }
 
 
     # -----------------------------------------------------

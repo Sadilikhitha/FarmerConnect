@@ -20,6 +20,7 @@ class EquipmentPublicOut(BaseModel):
     price_per_day: float
     location: str
     image_url: Optional[str] = None
+    available: bool
     created_at: datetime
 
 

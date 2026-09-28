@@ -67,7 +67,12 @@ export default function Register() {
 
   return (
 
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div
+  className="min-h-screen flex items-center justify-center px-4 bg-cover bg-center"
+  style={{
+    backgroundImage: "url('/farm-background.svg')",
+  }}
+>
 
       <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
 

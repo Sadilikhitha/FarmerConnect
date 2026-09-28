@@ -18,7 +18,7 @@ export default function OwnerDashboard() {
 
   const loadData = () => {
     api
-      .get("/equipment/owner/mine")
+      .get("/equipment/mine")
       .then((res) => setEquipment(res.data))
       .catch(() => setError("Could not load your equipment."));
 

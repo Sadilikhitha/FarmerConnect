@@ -10,6 +10,7 @@ import Equipment from "./pages/Equipment";
 import EquipmentDetails from "./pages/EquipmentDetails";
 import AddEquipment from "./pages/AddEquipment";
 import Settings from "./pages/Settings";
+import OwnerDashboard from "./pages/OwnerDashboard";
 
 export default function App() {
   return (
@@ -18,21 +19,42 @@ export default function App() {
 
       <main className="flex-1">
         <Routes>
+
           <Route path="/" element={<Home />} />
+
           <Route path="/login" element={<Login />} />
+
           <Route path="/register" element={<Register />} />
-          
+
           <Route path="/verify-otp" element={<VerifyOTP />} />
+
           <Route
-  path="/settings"
-  element={
-    <PrivateRoute>
-      <Settings />
-    </PrivateRoute>
-  }
-/>
-          <Route path="/equipment" element={<Equipment />} />
-          <Route path="/equipment/:id" element={<EquipmentDetails />} />
+            path="/settings"
+            element={
+              <PrivateRoute>
+                <Settings />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/dashboard"
+            element={
+              <PrivateRoute>
+                <OwnerDashboard />
+              </PrivateRoute>
+            }
+          />
+
+          <Route
+            path="/equipment"
+            element={<Equipment />}
+          />
+
+          <Route
+            path="/equipment/:id"
+            element={<EquipmentDetails />}
+          />
 
           <Route
             path="/add-equipment"

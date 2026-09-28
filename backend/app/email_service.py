@@ -4,10 +4,15 @@ Email service for sending FarmerConnect verification OTPs using Resend.
 
 import os
 import resend
-
 from dotenv import load_dotenv
 
-load_dotenv()
+BASE_DIR = os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))
+)
+
+ENV_PATH = os.path.join(BASE_DIR, ".env")
+
+load_dotenv(ENV_PATH)
 
 RESEND_API_KEY_1 = os.getenv("RESEND_API_KEY_1")
 RESEND_API_KEY_2 = os.getenv("RESEND_API_KEY_2")
