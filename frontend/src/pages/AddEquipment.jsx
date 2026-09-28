@@ -171,11 +171,17 @@ export default function AddEquipment() {
   // =====================================================
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-10">
+  <div
+    className="min-h-screen relative flex items-center justify-center px-4 py-10 bg-cover bg-center"
+    style={{
+      backgroundImage: "url('/farm-background.svg')",
+    }}
+  >
+    {/* Light overlay */}
+    <div className="absolute inset-0 bg-white/70"></div>
 
-      <div className="max-w-2xl mx-auto">
-
-        <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+    <div className="relative z-10 w-full max-w-2xl">
+      <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
 
           {/* HEADER */}
 
