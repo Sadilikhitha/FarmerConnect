@@ -20,6 +20,7 @@ class StatusEnum(str, enum.Enum):
     Pending = "Pending"
     Approved = "Approved"
     Rejected = "Rejected"
+    Cancelled = "Cancelled"
 
 
 class User(Base):
