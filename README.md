@@ -49,22 +49,26 @@ Every registered user can **both list and rent** equipment. There are no separat
 ### Browse Equipment
 ![Browse Equipment](screenshots/equipment.png)
 
-### Equipment Details & Booking
-![Equipment Details](screenshots/equipment-details.png)
 
 ### Register & OTP Verification
 | Register | Verify OTP |
 |----------|------------|
-| ![Register](screenshots/register.png) | ![Verify OTP](screenshots/verify-otp.png) |
+| ![Register](https://github.com/user-attachments/assets/2e753dcc-18e5-4334-b67e-c6360c0584fd>
+) | ![Verify OTP](screenshots/verify-otp.png) |
 
 ### Login
 ![Login](screenshots/login.png)
 
 ### Dashboard
-![Dashboard](screenshots/dashboard.png)
+![Dashboard](https://github.com/user-attachments/assets/2aa08413-16d6-45a4-bb24-1c3d687f884f)
 
 ### Add Equipment
-![Add Equipment](screenshots/add-equipment.png)
+![Add Equipment](https://github.com/user-attachments/assets/3945e351-7ee8-45d5-a4d0-74464e0c5907)
+<img width="1917" height="906" alt="image" src="https://github.com/user-attachments/assets/5165af96-113f-4bed-87fb-e850bf51c662" />
+
+
+### Equipment Details & Booking
+![Equipment Details](screenshots/equipment-details.png)
 
 ### Settings
 ![Settings](screenshots/settings.png)
