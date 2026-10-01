@@ -43,21 +43,20 @@ Every registered user can **both list and rent** equipment. There are no separat
 ### Home Page
 ![Home Page](https://github.com/user-attachments/assets/ce796972-a546-466e-9c47-ae9c0195ffb9)
 
-### Dashboard
-![Dashboard](screenshots/dashboard.png)
-
-### Browse Equipment
-![Browse Equipment](screenshots/equipment.png)
-
-
-### Register & OTP Verification
-| Register | Verify OTP |
-|----------|------------|
-| ![Register](https://github.com/user-attachments/assets/2e753dcc-18e5-4334-b67e-c6360c0584fd>
-) | ![Verify OTP](screenshots/verify-otp.png) |
+### Register 
+| ![Register](https://github.com/user-attachments/assets/2e753dcc-18e5-4334-b67e-c6360c0584fd)
 
 ### Login
-![Login](screenshots/login.png)
+![Login](https://github.com/user-attachments/assets/8edb6c60-3514-46e3-9d7d-0b8243e31b86)
+
+### Browse Equipment
+![Browse Equipment](https://github.com/user-attachments/assets/8e14a70b-4672-4651-b315-808a0524d519)
+
+### Rent Equipment
+<img width="1917" height="912" alt="image" src="https://github.com/user-attachments/assets/21d6652a-64fb-4d16-b926-e5252fd483cf" />
+
+### Dashboard
+<img width="1917" height="906" alt="image" src="https://github.com/user-attachments/assets/343f91be-e0ce-43a6-a8f2-ceb9554f9932" />
 
 ### Dashboard
 ![Dashboard](https://github.com/user-attachments/assets/2aa08413-16d6-45a4-bb24-1c3d687f884f)
@@ -65,7 +64,6 @@ Every registered user can **both list and rent** equipment. There are no separat
 ### Add Equipment
 ![Add Equipment](https://github.com/user-attachments/assets/3945e351-7ee8-45d5-a4d0-74464e0c5907)
 <img width="1917" height="906" alt="image" src="https://github.com/user-attachments/assets/5165af96-113f-4bed-87fb-e850bf51c662" />
-
 
 ### Equipment Details & Booking
 ![Equipment Details](screenshots/equipment-details.png)
