@@ -15,7 +15,7 @@
 
 ---
 
-## 📖 About
+##  About
 
 Buying heavy farm equipment such as tractors, harvesters, and ploughs is expensive, and much of it sits idle for most of the year. **FarmerConnect** connects farmers who own equipment with farmers who need it, so owners earn extra income and renters get machinery at an affordable daily rate.
 
@@ -23,18 +23,18 @@ Every registered user can **both list and rent** equipment. There are no separat
 
 ---
 
-## ✨ Features
+##  Features
 
-- 🔐 **Secure authentication**: JWT-based login with bcrypt-hashed passwords
-- 📧 **Email OTP verification**: 6-digit OTP sent via Resend, with resend support
-- 🚜 **List equipment**: add name, category, description, price per day, location, and a required photo
-- 🔍 **Browse and filter**: public equipment browsing with category filtering
-- 📅 **Booking system**: choose start and end dates, with total price calculated automatically
-- ✅ **Booking management**: owners can approve or reject requests, and renters can cancel
-- 🚫 **Self-rent protection**: users cannot rent their own equipment
-- 📊 **Dashboard**: manage your listings and track bookings (as renter and as owner)
-- ⚙️ **Settings**: update profile details and change password
-- 🖼️ **Image uploads**: equipment photos stored and served by the backend
+-  **Secure authentication**: JWT-based login with bcrypt-hashed passwords
+-  **Email OTP verification**: 6-digit OTP sent via Resend, with resend support
+-  **List equipment**: add name, category, description, price per day, location, and a required photo
+-  **Browse and filter**: public equipment browsing with category filtering
+-  **Booking system**: choose start and end dates, with total price calculated automatically
+-  **Booking management**: owners can approve or reject requests, and renters can cancel
+-  **Self-rent protection**: users cannot rent their own equipment
+-  **Dashboard**: manage your listings and track bookings (as renter and as owner)
+-  **Settings**: update profile details and change password
+-  **Image uploads**: equipment photos stored and served by the backend
 
 ---
 
@@ -117,7 +117,7 @@ FarmerConnect/
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -275,8 +275,3 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-<div align="center">
-
-Made with ❤️ for farmers
-
-</div>
