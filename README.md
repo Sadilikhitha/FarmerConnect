@@ -41,7 +41,8 @@ Every registered user can **both list and rent** equipment. There are no separat
 ## 📸 Screenshots
 
 ### Home Page
-![Home Page](screenshots/home.png)
+![Home Page](<img width="1917" height="915" alt="image" src="https://github.com/user-attachments/assets/ce796972-a546-466e-9c47-ae9c0195ffb9" />
+)
 
 ### Dashboard
 ![Dashboard](screenshots/dashboard.png)
