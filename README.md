@@ -9,7 +9,7 @@
 [![MySQL](https://img.shields.io/badge/Database-MySQL-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
 [![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind%20CSS-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
-[🌐 Live Demo](https://farmerconnect-hh67.onrender.com)
+[🌐 Live Demo](https://farmerconnect-eight.vercel.app/)
 
 </div>
 
