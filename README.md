@@ -268,9 +268,3 @@ Contributions are welcome! Fork the repo, create a feature branch, and open a pu
 
 ---
 
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
-
----
-
