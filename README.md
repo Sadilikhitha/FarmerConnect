@@ -1,4 +1,4 @@
-# FarmerConnect
+# 🌾 FarmerConnect
 
 FarmerConnect is a full-stack web platform where farmers can list agricultural equipment for rent and rent equipment listed by other farmers. Every registered user can both list and rent equipment. There is no Farmer/Owner role selection.
 
